@@ -5,6 +5,7 @@ import AddRestaurant from './AddRestaurant'
 
 import { baseUrl } from './api/restaurant'
 
+
 export type Restaurant = {
   name: string,
   location: string,

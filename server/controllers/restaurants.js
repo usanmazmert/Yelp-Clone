@@ -25,7 +25,7 @@ export async function getRestaurant(req, res, next){
         res.status(200).json({
             status: "success",
             data: {
-                restaurants: results["rows"]
+                restaurant: results["rows"]
             }
         })
     }catch(err){
@@ -40,7 +40,7 @@ export async function createRestaurant(req, res, next){
         res.status(200).json({
             status: "success",
             data: {
-                restaurants: results["rows"]
+                restaurant: results["rows"]
             }
         })
     }catch(err){
@@ -76,4 +76,34 @@ export async function deleteRestaurants(req, res, next){
     }catch(err){
         next(new CustomError(err.message, 500));
     }
+}
+
+
+export async function addReview(req, res, next){
+    try{
+        const results = await db.query(`INSERT INTO reviews (restaurant_id, name, review, rating) VALUES ($1, $2, $3, $4) RETURNING *`, [req.params.id, req.body.name, req.body.review, req.body.rating]);
+        res.status(200).json({
+            status: "success",
+            data: {
+                review: results["rows"][0]
+            }
+        })
+    }catch(err){
+        next(new CustomError(err.message, 500));
+    }
+}
+
+export async function getReviews(req, res, next){
+    try{
+        const results = await db.query(`SELECT * FROM reviews WHERE restaurant_id=$1`, [req.params.id]);
+        res.status(200).json({
+            status: "success",
+            data: {
+                reviews: results["rows"]
+            }
+        })
+    }catch(err){
+        next(new NotFoundError(err.message));
+    }
+    
 }
