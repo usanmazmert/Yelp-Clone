@@ -2,11 +2,13 @@ import dotenv from "dotenv"
 import express from "express"
 import restaurantRouter from "./routes/restaurants.js"
 import { handler } from "./errors/index.js";
+import cors from "cors"
 
 
 dotenv.config();
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use("/api/v1/restaurants", restaurantRouter)
 
